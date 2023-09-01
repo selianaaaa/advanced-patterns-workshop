@@ -1,4 +1,4 @@
-import { Equal, Expect } from "../helpers/type-utils";
+import { Equal, Expect } from '../helpers/type-utils';
 
 export class BuilderTuple<TList extends any[] = []> {
   list: TList;
@@ -10,7 +10,7 @@ export class BuilderTuple<TList extends any[] = []> {
   push<TNum extends number>(num: TNum): BuilderTuple<[...TList, TNum]> {
     this.list.push(num);
 
-    return this as any;
+    return this as unknown as BuilderTuple<[...TList, TNum]>;
   }
 
   unshift<TNum extends number>(num: TNum): BuilderTuple<[TNum, ...TList]> {
@@ -20,10 +20,16 @@ export class BuilderTuple<TList extends any[] = []> {
   }
 }
 
+// const builderBeforePush: BuilderTuple<[]>
 const builderBeforePush = new BuilderTuple();
+
+// const listBeforePush: []
 const listBeforePush = builderBeforePush.list;
 
-const builderAfterPush = builderBeforePush.unshift(3).unshift(2).unshift(1);
+// const builderAfterPush: BuilderTuple<[1, 2, 3]>
+const builderAfterPush = builderBeforePush.push(1).push(2).push(3);
+
+// const listAfterPush: [1, 2, 3]
 const listAfterPush = builderAfterPush.list;
 
 type tests = [

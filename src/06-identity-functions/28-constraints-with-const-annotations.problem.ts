@@ -1,15 +1,19 @@
-import { it } from "vitest";
-import { Equal, Expect } from "../helpers/type-utils";
+import { it } from 'vitest';
+import { Equal, Expect } from '../helpers/type-utils';
 
-export const narrowFruits = <TFruits>(t: TFruits) => t;
+export const narrowFruits = <
+  const TFruits extends readonly { name: string; price: number }[]
+>(
+  t: TFruits
+) => t;
 
 const fruits = narrowFruits([
   {
-    name: "apple",
+    name: 'apple',
     price: 1,
   },
   {
-    name: "banana",
+    name: 'banana',
     price: 2,
   },
 ]);
@@ -20,11 +24,11 @@ type tests = [
       typeof fruits,
       readonly [
         {
-          readonly name: "apple";
+          readonly name: 'apple';
           readonly price: 1;
         },
         {
-          readonly name: "banana";
+          readonly name: 'banana';
           readonly price: 2;
         }
       ]
@@ -32,9 +36,9 @@ type tests = [
   >
 ];
 
-it("Should ONLY let you pass an array of fruits", () => {
+it('Should ONLY let you pass an array of fruits', () => {
   const notAllowed = narrowFruits([
     // @ts-expect-error
-    "not allowed",
+    'not allowed',
   ]);
 });
